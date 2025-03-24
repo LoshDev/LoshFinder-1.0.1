@@ -30,18 +30,14 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
 
 3. Si vous n'avez pas encore un fichier `requirements.txt`, vous pouvez installer directement les bibliothèques nécessaires (si besoin) avec :
     ```bash
-    pip install os re
+    pip install os tkinter threading Thread
     ```
 
 ## Utilisation
 
 1. Lancez le script principal en ligne de commande :
     ```bash
-    python loshfinder.py
+    python LoshFinder1.0.1.py
     ```
 
-2. Ensuite, fournissez le dossier contenant les fichiers que vous souhaitez rechercher ainsi que le terme de recherche (mot, phrase, etc.).
 
-Exemple de commande :
-```bash
-python loshfinder.py --dossier "chemin/vers/dossier" --terme "mot_de_recherche"
