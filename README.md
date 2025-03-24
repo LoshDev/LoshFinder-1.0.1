@@ -19,7 +19,7 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
 
 1. Clonez ce dépôt :
     ```bash
-    git clone https://github.com/ton-utilisateur/LoshFinder.git
+    [git clone https://github.com/ton-utilisateur/LoshFinder.git](https://github.com/LoshDev/LoshFinder-1.0.1.git)
     cd LoshFinder
     ```
 
