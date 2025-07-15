@@ -50,34 +50,39 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
     ```
 ## Photos
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/b5b65d23-c18c-42af-bdd3-d7b2a3fa89c0" width="450" /><br/>
-      <b>Interface 1.1.0</b>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/2a55864c-b5cf-43dc-9efe-3676115ea97a" width="450" /><br/>
-      <b>Utilisation</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/76d72fa3-6f51-4855-9da3-01d1df5162ab" width="450" /><br/>
-      <b>Exportation</b>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/d0125ba6-de12-4cc2-a4d3-cc2bb1ddb1e6" width="300" /><br/>
-      <b>Statistiques</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2">
-      <img src="https://github.com/user-attachments/assets/4aa69784-5199-4d6d-b017-a838ea86ba03" width="300" /><br/>
-      <b>Choix du fichier (.txt, .sql, .csv, .json etc)</b>
-    </td>
-  </tr>
-</table>
+### Interface 1.1.0  
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b5b65d23-c18c-42af-bdd3-d7b2a3fa89c0" width="800" />
+</p>
+
+---
+
+### Utilisation  
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2a55864c-b5cf-43dc-9efe-3676115ea97a" width="800" />
+</p>
+
+---
+
+### Exportation  
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/76d72fa3-6f51-4855-9da3-01d1df5162ab" width="800" />
+</p>
+
+---
+
+### Statistiques  
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d0125ba6-de12-4cc2-a4d3-cc2bb1ddb1e6" width="400" />
+</p>
+
+---
+
+### Choix du fichier (.txt, .sql, .csv, .json etc)  
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4aa69784-5199-4d6d-b017-a838ea86ba03" width="300" />
+</p>
+
 
     
 
