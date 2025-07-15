@@ -1,6 +1,10 @@
 # LoshFinder
 
-**LoshFinder** est un outil gratuit et simple à utiliser qui permet de rechercher rapidement des mots, caractères ou phrases dans un ensemble de fichiers. Il prend en charge plusieurs formats de fichiers tels que `.txt`, `.sql`, `.html`, etc. Il permet de faire une recherche avancée à la manière de la fonction `CTRL + F` sur un ensemble de fichiers sans avoir à ouvrir chaque fichier manuellement.
+**LoshFinder** est un outil **gratuit** et simple à utiliser qui permet de rechercher rapidement des mots, caractères ou phrases dans un ensemble de fichiers. Il prend en charge plusieurs formats de fichiers tels que `.txt`, `.sql`, `.html`, etc. Il permet de faire une recherche avancée à la manière de la fonction `CTRL + F` sur un ensemble de fichiers sans avoir à ouvrir chaque fichier manuellement.
+
+**Vous allez me dire a quoi ca peut servir ?**
+- Lecture de nombreuse base de données en simultanée
+- Eviter le temps entre chaque ouverture de fichier
 
 
 ## Mise à jour 1.1.0
