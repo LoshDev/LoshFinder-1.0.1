@@ -54,7 +54,7 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
     ```
 ## Photos
 
-### Interface 1.1.0  
+### Nouvelle Interface  
 <p align="center">
   <img src="https://github.com/user-attachments/assets/b5b65d23-c18c-42af-bdd3-d7b2a3fa89c0" width="800" />
 </p>
