@@ -2,12 +2,21 @@
 
 **LoshFinder** est un outil gratuit et simple à utiliser qui permet de rechercher rapidement des mots, caractères ou phrases dans un ensemble de fichiers. Il prend en charge plusieurs formats de fichiers tels que `.txt`, `.sql`, `.html`, etc. Il permet de faire une recherche avancée à la manière de la fonction `CTRL + F` sur un ensemble de fichiers sans avoir à ouvrir chaque fichier manuellement.
 
+
+## Mise à jour 1.1.0
+
+- Ajout d'un bouton export
+- Changement de l'interface graphique
+- Ajout de statistiques de recherches
+
+
 ## Fonctionnalités
 
 - Rechercher des mots, phrases ou caractères dans plusieurs fichiers à la fois.
 - Prise en charge de différents formats de fichiers comme `.txt`, `.sql`, `.html`, et plus.
 - Recherche rapide et efficace pour gagner du temps.
 - Interface simple et facile à utiliser.
+- Export des données format txt csv json
 
 ## Technologies
 
@@ -37,7 +46,7 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
 
 1. Lancez le script principal en ligne de commande :
     ```bash
-    python LoshFinder1.0.1.py
+    python LoshFinderV1.1.0.py
     ```
 
 
