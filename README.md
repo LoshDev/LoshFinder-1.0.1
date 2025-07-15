@@ -82,7 +82,7 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
 
 ---
 
-### Choix du fichier (.txt, .sql, .csv, .json etc)  
+### Choix du fichier (`.txt`, `.sql`, `.csv`, `.json` etc)  
 <p align="center">
   <img src="https://github.com/user-attachments/assets/4aa69784-5199-4d6d-b017-a838ea86ba03" width="300" />
 </p>
