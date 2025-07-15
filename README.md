@@ -8,7 +8,7 @@
 - Ajout d'un bouton export
 - Changement de l'interface graphique
 - Ajout de statistiques de recherches
-
+- Ajout de commentaire dans le code pour la compréhension / Changement des class/fonctions en français.
 
 ## Fonctionnalités
 
@@ -48,5 +48,20 @@ Pour installer **LoshFinder**, assurez-vous d'avoir Python 3.x installé sur vot
     ```bash
     python LoshFinderV1.1.0.py
     ```
+## Photos
+Interface 1.1.0
+<img width="934" height="578" alt="image" src="https://github.com/user-attachments/assets/b5b65d23-c18c-42af-bdd3-d7b2a3fa89c0" />
+Utilisation 
+<img width="933" height="581" alt="image" src="https://github.com/user-attachments/assets/2a55864c-b5cf-43dc-9efe-3676115ea97a" />
+Exportation 
+<img width="940" height="530" alt="image" src="https://github.com/user-attachments/assets/76d72fa3-6f51-4855-9da3-01d1df5162ab" />
+Statistiques
+<img width="434" height="56" alt="image" src="https://github.com/user-attachments/assets/d0125ba6-de12-4cc2-a4d3-cc2bb1ddb1e6" />
+Choix du fichier (.txt, .sql, .csv, .json etc)
+<img width="254" height="402" alt="image" src="https://github.com/user-attachments/assets/4aa69784-5199-4d6d-b017-a838ea86ba03" />
+
+
+    
+
 
 
