@@ -1,169 +1,238 @@
 import os
-import tkinter as tk 
+import tkinter as tk
 from tkinter import filedialog, scrolledtext, messagebox
 from threading import Thread
+from concurrent.futures import ThreadPoolExecutor
 from tkinter import ttk
+import time
+import json
+import csv
 
-#APP graphique
-class SearchApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("LoshFinder  V 1.0.1")
-        self.root.minsize(750, 450)  
-        self.configure_dark_theme()  
-        self.create_widgets()
-        self.configure_grid()  
+#CLASSE POO
+class ApplicationRecherche:
+    #FENETRE/TITRE TKINTER
+    def __init__(self, racine):
+        self.racine = racine
+        self.racine.title("LoshFinder  V 1.1.0")
+        self.racine.minsize(900, 550)
+        self.configurer_theme_sombre()
+        self.creer_widgets()
+        self.configurer_grille()
+    #THEME SOMBRE
+    def configurer_theme_sombre(self):
+        self.couleur_fond = "#1e1e1e"
+        self.couleur_texte = "#ffffff"
+        self.couleur_accent = "#fdd835"
+        self.entree_fond = "#2e2e2e"
+        self.entree_bordure = "#3c3c3c"
 
-    #DARK THEME 
-    def configure_dark_theme(self):
-       
-        self.bg_color = "#2b2b2b" 
-        self.fg_color = "white"    
-        self.highlight_bg = "yellow"  
-        self.highlight_fg = "black"   
+        self.racine.configure(bg=self.couleur_fond)
 
-  
-        self.root.configure(bg=self.bg_color)
-        self.root.option_add('*background', self.bg_color)
-        self.root.option_add('*foreground', self.fg_color)
-        self.root.option_add('*highlightBackground', self.bg_color)  
-        self.root.option_add('*highlightColor', self.fg_color)
-
-       
         self.style = ttk.Style()
-        self.style.configure('TListbox', background=self.bg_color, foreground=self.fg_color, borderwidth=1, relief='solid')
+        self.style.theme_use("default")
+        self.style.configure("TButton",
+                             background=self.entree_fond,
+                             foreground=self.couleur_texte,
+                             padding=6,
+                             relief="flat")
+        self.style.map("TButton",
+                       background=[("active", "#3c3c3c")])
 
-    def configure_grid(self):
-       
-        self.root.grid_rowconfigure(2, weight=1)
-        self.root.grid_columnconfigure(1, weight=1)
-        self.root.grid_columnconfigure(2, weight=1)
+        self.style.configure("TLabel",
+                             background=self.couleur_fond,
+                             foreground=self.couleur_texte)
 
-    def create_widgets(self):
-       
-        self.folder_label = tk.Label(self.root, text="Dossier :")
-        self.folder_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.style.configure("TEntry",
+                             fieldbackground=self.entree_fond,
+                             foreground=self.couleur_texte)
 
-        
-        self.folder_entry = tk.Entry(self.root, width=50)
-        self.folder_entry.grid(row=0, column=1, padx=10, pady=10, sticky="we")
+        self.style.configure("TListbox",
+                             background=self.entree_fond,
+                             foreground=self.couleur_texte)
+    #GRILLE POUR LES BOUTON ET LES INPUTSS
+    def configurer_grille(self):
+        self.racine.grid_rowconfigure(2, weight=1)
+        self.racine.grid_columnconfigure(1, weight=1)
+        self.racine.grid_columnconfigure(2, weight=1)
 
-        
-        self.browse_button = tk.Button(self.root, text="Parcourir", command=self.browse_folder)
-        self.browse_button.grid(row=0, column=2, padx=10, pady=10)
+    #BOUTON/INPUTS 
+    def creer_widgets(self):
+        self.label_dossier = ttk.Label(self.racine, text="Dossier :")
+        self.label_dossier.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
-       
-        self.search_label = tk.Label(self.root, text="Rechercher :")
-        self.search_label.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+        self.entree_dossier = ttk.Entry(self.racine, width=60)
+        self.entree_dossier.grid(row=0, column=1, padx=10, pady=10, sticky="we")
 
-       
-        self.search_entry = tk.Entry(self.root, width=50)
-        self.search_entry.grid(row=1, column=1, padx=10, pady=10, sticky="we")
+        self.bouton_parcourir = ttk.Button(self.racine, text="Parcourir", command=self.parcourir_dossier)
+        self.bouton_parcourir.grid(row=0, column=2, padx=10, pady=10)
 
-       
-        self.search_button = tk.Button(self.root, text="Rechercher", command=self.start_search)
-        self.search_button.grid(row=1, column=2, padx=10, pady=10)
+        self.label_recherche = ttk.Label(self.racine, text="Rechercher :")
+        self.label_recherche.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
-       
-        self.file_listbox = tk.Listbox(self.root, width=40, height=20, bd=1, relief=tk.SOLID, highlightthickness=1, highlightcolor=self.highlight_bg, highlightbackground=self.bg_color)
-        self.file_listbox.grid(row=2, column=0, padx=10, pady=10, sticky="ns")
-        self.file_listbox.bind("<<ListboxSelect>>", self.on_file_select)
+        self.entree_recherche = ttk.Entry(self.racine, width=60)
+        self.entree_recherche.grid(row=1, column=1, padx=10, pady=10, sticky="we")
 
-     
-        self.result_text = scrolledtext.ScrolledText(self.root, width=80, height=20)
-        self.result_text.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
+        self.bouton_rechercher = ttk.Button(self.racine, text="Rechercher", command=self.lancer_recherche)
+        self.bouton_rechercher.grid(row=1, column=2, padx=10, pady=10)
 
-    
-        self.result_text.config(bg=self.bg_color, fg=self.fg_color)
-        self.result_text.tag_config('highlight', background=self.highlight_bg, foreground=self.highlight_fg)
+        self.liste_fichiers = tk.Listbox(self.racine, width=40, height=20, bg=self.entree_fond,
+                                         fg=self.couleur_texte, bd=1, relief=tk.FLAT,
+                                         highlightthickness=1, highlightbackground=self.entree_bordure)
+        self.liste_fichiers.grid(row=2, column=0, padx=(10, 5), pady=10, sticky="ns")
+        self.liste_fichiers.bind("<<ListboxSelect>>", self.selection_fichier)
 
-    def browse_folder(self):
-        folder_selected = filedialog.askdirectory()
-        if folder_selected:
-            self.folder_entry.delete(0, tk.END)
-            self.folder_entry.insert(0, folder_selected)
+        self.texte_resultats = scrolledtext.ScrolledText(self.racine, width=80, height=20, bg=self.entree_fond,
+                                                         fg=self.couleur_texte, insertbackground=self.couleur_texte,
+                                                         relief=tk.FLAT, wrap=tk.WORD, borderwidth=1)
+        self.texte_resultats.grid(row=2, column=1, columnspan=2, padx=(5, 10), pady=(10, 5), sticky="nsew")
+        self.texte_resultats.tag_config('highlight', background=self.couleur_accent, foreground="#000000")
 
-    def start_search(self):
-        folder = self.folder_entry.get()
-        query = self.search_entry.get()
+        self.label_stats = ttk.Label(self.racine, text="")
+        self.label_stats.grid(row=3, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="w")
 
-        if not folder or not query:
+        self.bouton_exporter = ttk.Button(self.racine, text="Exporter", command=self.exporter_resultats)
+        self.bouton_exporter.grid(row=3, column=2, padx=10, pady=(0, 10), sticky="e")
+    #FONCTION RECHERCHE DU DOSSIER
+    def parcourir_dossier(self):
+        dossier = filedialog.askdirectory()
+        if dossier:
+            self.entree_dossier.delete(0, tk.END)
+            self.entree_dossier.insert(0, dossier)
+    #FONCTION RECHERCHE DANS DOSSIER
+    def lancer_recherche(self):
+        dossier = self.entree_dossier.get()
+        recherche = self.entree_recherche.get()
+
+        if not dossier or not recherche:
             messagebox.showwarning("Attention", "Veuillez sélectionner un dossier et entrer une recherche.")
             return
 
-        self.result_text.delete(1.0, tk.END)  
-        self.clear_highlight()  
+        self.texte_resultats.delete(1.0, tk.END)
+        self.supprimer_surbrillance()
+        self.label_stats.config(text="")
 
-        self.result_text.insert(tk.END, "Recherche en cours...\n")
-        self.root.update()  
+        self.texte_resultats.insert(tk.END, "Recherche en cours...\n")
+        self.racine.update()
 
-       
-        search_thread = Thread(target=self.search_in_files, args=(folder, query))
-        search_thread.start()
+        Thread(target=self.recherche_fichiers_parallel, args=(dossier, recherche)).start()
+    #STAZTISTIQUES 
+    def recherche_fichiers_parallel(self, dossier, recherche):
+        self.resultats = {}
+        nb_fichiers = 0
+        lignes_trouvees = 0
+        debut = time.time()
 
-    def search_in_files(self, folder, query):
-        self.results = {}  
-        files_count = 0
-        for root, _, files in os.walk(folder):
-            for file in files:
-                if file.endswith(".txt"):
-                    file_path = os.path.join(root, file)
-                    try:
-                        with open(file_path, "r", encoding='utf-8') as f:
-                            for line in f:
-                                if query.lower() in line.lower():
-                                    if file not in self.results:
-                                        self.results[file] = []
-                                    self.results[file].append(line.strip())
-                    except UnicodeDecodeError:
-                        continue
-                    files_count += 1
-                    if files_count % 10 == 0:
-                        self.root.update() 
-        if not self.results:
-            self.result_text.insert(tk.END, "Rien n'as été trouvé.\n")
+        tous_les_fichiers = []
+        for racine, _, fichiers in os.walk(dossier):
+            for fichier in fichiers:
+                if fichier.endswith(".txt"):
+                    tous_les_fichiers.append(os.path.join(racine, fichier))
+        #lectture plus simple
+        def chercher_dans_fichier(chemin):
+            lignes = []
+            try:
+                with open(chemin, "r", encoding='utf-8') as f:
+                    for ligne in f:
+                        if recherche.lower() in ligne.lower():
+                            formaté = ' | '.join(part for part in ligne.strip().split(',') if part and part.lower() not in ('<blank>', 'null'))
+                            lignes.append(formaté)
+            except UnicodeDecodeError:
+                pass
+            return os.path.basename(chemin), lignes
+
+        with ThreadPoolExecutor(max_workers=20) as executeur:
+            for fichier, lignes in executeur.map(chercher_dans_fichier, tous_les_fichiers):
+                if lignes:
+                    self.resultats[fichier] = lignes
+                    lignes_trouvees += len(lignes)
+                nb_fichiers += 1
+
+        temps = time.time() - debut
+
+        self.texte_resultats.delete(1.0, tk.END)
+
+        if not self.resultats:
+            self.texte_resultats.insert(tk.END, "Aucun résultat trouvé.\n")
         else:
-            self.file_listbox.delete(0, tk.END)
-            self.file_listbox.insert(tk.END, "Tout")
-            for file in self.results:
-                self.file_listbox.insert(tk.END, file)
+            self.liste_fichiers.delete(0, tk.END)
+            self.liste_fichiers.insert(tk.END, "Tout")
+            for fichier in self.resultats:
+                self.liste_fichiers.insert(tk.END, fichier)
+            self.texte_resultats.insert(tk.END, f"Recherche terminée. {len(self.resultats)} fichiers avec résultats.\n")
 
-        self.result_text.insert(tk.END, "Recherche terminée.\n")
-        self.root.update()  
-
-        self.display_results("Tout")
-
-    def display_results(self, file_key):
-        self.result_text.delete(1.0, tk.END)  
-        if file_key == "Tout":
-            for file in self.results:
-                for result in self.results[file]:
-                    self.result_text.insert(tk.END, result + "\n")
+        self.label_stats.config(text=f"Fichiers analysés : {nb_fichiers} | Fichiers trouvés : {len(self.resultats)} | Lignes trouvées : {lignes_trouvees} | Temps : {temps:.2f}s")
+        self.racine.update()
+        self.afficher_resultats("Tout")
+    #afficher les resultat dans la box
+    def afficher_resultats(self, fichier_cle):
+        self.texte_resultats.delete(1.0, tk.END)
+        if fichier_cle == "Tout":
+            for fichier in self.resultats:
+                for ligne in self.resultats[fichier]:
+                    self.texte_resultats.insert(tk.END, f"{ligne}\n")
         else:
-            for result in self.results[file_key]:
-                self.result_text.insert(tk.END, result + "\n")
-        self.apply_highlight(self.search_entry.get())
+            for ligne in self.resultats[fichier_cle]:
+                self.texte_resultats.insert(tk.END, f"{ligne}\n")
+        self.appliquer_surbrillance(self.entree_recherche.get())
+    #EXPORT BOUTON 
+    def exporter_resultats(self):
+        if not self.texte_resultats.get(1.0, tk.END).strip():
+            messagebox.showinfo("Info", "Aucun résultat à exporter.")
+            return
 
-    def apply_highlight(self, query):
-        start_idx = "1.0"
+        chemin = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[
+                ("Fichier texte", "*.txt"),
+                ("Fichier CSV", "*.csv"),
+                ("Fichier JSON", "*.json")
+            ]
+        )
+        if not chemin:
+            return
+
+        try:
+            if chemin.endswith(".txt"):
+                with open(chemin, "w", encoding="utf-8") as f:
+                    f.write(self.texte_resultats.get(1.0, tk.END))
+
+            elif chemin.endswith(".csv"):
+                with open(chemin, "w", encoding="utf-8", newline='') as f:
+                    writer = csv.writer(f)
+                    for fichier, lignes in self.resultats.items():
+                        for ligne in lignes:
+                            writer.writerow([fichier, ligne])
+
+            elif chemin.endswith(".json"):
+                with open(chemin, "w", encoding="utf-8") as f:
+                    json.dump(self.resultats, f, ensure_ascii=False, indent=4)
+
+            messagebox.showinfo("Succès", "Résultats exportés avec succès !")
+
+        except Exception as e:
+            messagebox.showerror("Erreur", f"Erreur lors de l'export : {e}")
+
+    def appliquer_surbrillance(self, recherche):
+        debut = "1.0"
         while True:
-            start_idx = self.result_text.search(query, start_idx, tk.END, nocase=1)
-            if not start_idx:
+            debut = self.texte_resultats.search(recherche, debut, tk.END, nocase=1)
+            if not debut:
                 break
-            end_idx = f"{start_idx}+{len(query)}c"
-            self.result_text.tag_add('highlight', start_idx, end_idx)
-            start_idx = end_idx
+            fin = f"{debut}+{len(recherche)}c"
+            self.texte_resultats.tag_add('highlight', debut, fin)
+            debut = fin
 
-    def clear_highlight(self):
-        self.result_text.tag_remove('highlight', '1.0', tk.END)
-    def on_file_select(self, event):
+    def supprimer_surbrillance(self):
+        self.texte_resultats.tag_remove('highlight', '1.0', tk.END)
+#SELEC FICHIER A GAUCHE BOX (.txt, .csv, etcc)
+    def selection_fichier(self, event):
         selection = event.widget.curselection()
         if selection:
             index = selection[0]
-            file_key = event.widget.get(index)
-            self.display_results(file_key)
-
+            fichier_cle = event.widget.get(index)
+            self.afficher_resultats(fichier_cle)
+#START
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = SearchApp(root)
-    root.mainloop()
+    racine = tk.Tk()
+    app = ApplicationRecherche(racine)
+    racine.mainloop()
